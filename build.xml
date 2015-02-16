@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GraphStats" default="dist">
+	
+	<property name="src" location="src"/>
+	<property name="lib" location="lib"/>
+	<property name="bin" location="bin"/>
+	<property name="classes" location="bin/classes"/>
+	<property name="dist"  location="bin/dist"/>
+	
+	<path id="libs">
+		<fileset dir="${lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${bin}"/>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${classes}"/>
+		<mkdir dir="${dist}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${classes}" classpathref="libs"/>
+	</target>
+	
+	<target name="dist" depends="compile">
+		<jar destfile="${dist}/GraphStats.jar" basedir="${bin}">
+			<manifest>
+				<attribute name="Main-Class" value="Main"/>
+			</manifest>
+		</jar>
+	</target>
+
+</project>
