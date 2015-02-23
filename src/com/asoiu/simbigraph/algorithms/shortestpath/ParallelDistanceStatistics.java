@@ -1,7 +1,6 @@
 package com.asoiu.simbigraph.algorithms.shortestpath;
 
 import edu.uci.ics.jung.graph.Hypergraph;
-
 import java.util.Collection;
 import java.util.function.Function;
 
@@ -29,19 +28,20 @@ public class ParallelDistanceStatistics<V, E> {
      * shortest path from <code>u</code> to <code>v</code>. If the graph is
      * disconnected (that is, some vertex is not reachable from another
      * vertices), the value associated with the vertex into <code>eccs</code>
-     * array will be <code>Double.POSITIVE_INFINITY</code>.
+     * array will be <code>Integer.MAX_VALUE</code>.
      * <p>
      * This method uses Function and Parallel Stream features of JDK 1.8 for
      * parallel execution.
      */
     private void calculateEccentricities(Hypergraph<V, E> g) {
-        ParallelUnweightedShortestPath<V, E> d = new ParallelUnweightedShortestPath<>(g);
-        this.vertices = g.getVertices();
-        Function<V, Double> f_inner = (v) -> {
+        ParallelUnweightedShortestPath<V, E> d = new ParallelUnweightedShortestPath<V, E>(g);
+        vertices = g.getVertices();
+        Function<V, Integer> f_inner = (v) -> {
             int di = d.getEccentricity(v);
-            return (di == Integer.MAX_VALUE) ? Double.POSITIVE_INFINITY : (double)di;
+            return di;
         };
-        this.eccs = this.vertices.parallelStream().map(f_inner).sorted().toArray();
+        //eccs = vertices.stream().parallel().map(f_inner).sorted().toArray();
+        eccs = vertices.stream().map(f_inner).sorted().toArray();
     }
 
     /**
@@ -52,8 +52,8 @@ public class ParallelDistanceStatistics<V, E> {
      *
      * @return the getDiameter of <code>g</code>, ignoring edge weights.
      */
-    public double getDiameter() {
-        return (Double)eccs[eccs.length - 1];
+    public Integer getDiameter() {
+        return (Integer) eccs[eccs.length - 1];
     }
 
     /**
@@ -64,7 +64,7 @@ public class ParallelDistanceStatistics<V, E> {
      *
      * @return the getRadius of <code>g</code>, ignoring edge weights.
      */
-    public double getRadius() {
-        return (Double)eccs[0];
+    public Integer getRadius() {
+        return (Integer) eccs[0];
     }
 }

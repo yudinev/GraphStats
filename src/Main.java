@@ -4,7 +4,6 @@ import edu.uci.ics.jung.graph.Hypergraph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.io.PajekNetReader;
 import org.apache.commons.collections15.Factory;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -36,7 +35,7 @@ public class Main {
 
         System.out.println("Vertices = " + graph.getVertexCount());
         System.out.println("Arcs = " + graph.getEdgeCount());
-        pds  = new ParallelDistanceStatistics<>(graph);
+        pds  = new ParallelDistanceStatistics<Integer, Integer>(graph);
         System.out.println("Diameter = " + pds.getDiameter());
         System.out.println("Radius = " + pds.getRadius());
         long elapsedTime = System.currentTimeMillis() - start;

@@ -2,12 +2,10 @@ package com.asoiu.simbigraph.algorithms.shortestpath;
 
 import edu.uci.ics.jung.graph.Hypergraph;
 import javafx.util.Pair;
-
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.PriorityQueue;
 
 /**
  * This is parallel version of
@@ -37,35 +35,37 @@ public class ParallelUnweightedShortestPath<V, E> {
     public int getEccentricity(V source) {
         int ecc = 0;
         Map<V, Integer> distances = new HashMap<V, Integer>();
-        Collection<V> vertices = mGraph.getVertices();
-        for (V v : vertices) {
+        for (V v : mGraph.getVertices()) {
             distances.put(v, Integer.MAX_VALUE);
         }
         distances.replace(source, 0);
-        PriorityBlockingQueue<Pair<Integer, V>> q = new PriorityBlockingQueue<>(
-            100, new Comparator<Pair<Integer, V>>() {
+        PriorityQueue<Pair<V, Integer>> q = new PriorityQueue<Pair<V, Integer>>(
+            100, new Comparator<Pair<V, Integer>>() {
             @Override
-            public int compare(Pair<Integer, V> o1, Pair<Integer, V> o2) {
-                return (o1.getKey() > o2.getKey() ? -1 : 1);
+            public int compare(Pair<V, Integer> o1, Pair<V, Integer> o2) {
+                return (o1.getValue() > o2.getValue() ? 1 : -1);
             }
         }
         );
-        q.add(new Pair<Integer, V>(0, source));
+        q.add(new Pair<V, Integer>(source, 0));
+        Pair<V, Integer> tempPair;
+        V v;
+        Integer cur_d;
         while (!q.isEmpty()) {
-            V v = q.peek().getValue();
-            int cur_d = -q.peek().getKey();
-            q.poll();
-            if (cur_d > distances.get(v).intValue()) {
+        	tempPair = q.poll();
+        	v = tempPair.getKey();
+        	cur_d = tempPair.getValue();
+            if (cur_d > distances.get(v)) {
                 continue;
             }
             for (V neighbor : mGraph.getNeighbors(v)) {
-                if (distances.get(v).intValue() + 1 < distances.get(neighbor).intValue()) {
-                    distances.replace(neighbor, distances.get(v).intValue() + 1);
-                    q.add(new Pair<Integer, V>(-(distances.get(v).intValue() + 1), neighbor));
+                if (distances.get(v) + 1 < distances.get(neighbor)) {
+                    distances.replace(neighbor, distances.get(v) + 1);
+                    q.add(new Pair<V, Integer>(neighbor, distances.get(v) + 1));
                 }
             }
-            if (distances.get(v).intValue() > ecc) {
-                ecc = distances.get(v).intValue();
+            if (distances.get(v) > ecc) {
+                ecc = distances.get(v);
             }
         }
         return ecc;
