@@ -17,7 +17,7 @@
 		<delete dir="${bin}"/>
 	</target>
 
-	<target name="init">
+	<target name="init" depends="clean">
 		<mkdir dir="${classes}"/>
 		<mkdir dir="${dist}"/>
 		<mkdir dir="${dist}/lib"/>
