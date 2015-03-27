@@ -1,11 +1,12 @@
-import com.asoiu.simbigraph.algorithms.shortestpath.ParallelDistanceStatistics;
-import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.Hypergraph;
-import edu.uci.ics.jung.graph.SparseMultigraph;
-import edu.uci.ics.jung.io.PajekNetReader;
-import org.apache.commons.collections15.Factory;
 import java.io.IOException;
-import java.net.URISyntaxException;
+
+import org.apache.commons.collections15.Factory;
+
+import com.asoiu.simbigraph.algorithms.shortestpath.ParallelDistanceStatistics;
+import com.asoiu.simbigraph.graph.AdjacencyListGraph;
+
+import edu.uci.ics.jung.graph.Hypergraph;
+import edu.uci.ics.jung.io.PajekNetReader;
 
 /**
  * @author Andrey Kurchanov
@@ -14,52 +15,45 @@ public class Main {
     /**
      * @param args
      */
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
         String  path;
-        Hypergraph<Integer, Integer> graph;
+        Hypergraph<Integer, Integer> graph = null;
         ParallelDistanceStatistics<Integer, Integer> pds;
 
-        // Input graph file (Pajek format) should be specified as first input argument
         if (args.length != 1) {
-            throw new IllegalArgumentException("Can't find graph file parameter");
+            throw new IllegalArgumentException("Usage: java -jar GraphStats.jar <PathToGraphFile>");
         } else {
             path = args[0];
         }
 
-        long start = System.currentTimeMillis();
-
-        graph = loadGraph(path);
-        if (graph == null) {
-            return;
-        }
-
+        System.out.println("Loading graph from the " + path + " file");
+        try {
+			graph = loadGraph(path);
+		} catch (IOException e) {
+			System.out.println("Failed to load graph");
+		}
+        System.out.println("Graph successfully loaded.");
+        
         System.out.println("Vertices = " + graph.getVertexCount());
-        System.out.println("Arcs = " + graph.getEdgeCount());
+        if (graph.getDefaultEdgeType().name() == "DIRECTED")
+        	System.out.println("Arcs = " + graph.getEdgeCount());
+        else if (graph.getDefaultEdgeType().name() == "UNDIRECTED")
+        	System.out.println("Edges = " + graph.getEdgeCount());
+        
+        long startTime = System.currentTimeMillis();
         pds  = new ParallelDistanceStatistics<Integer, Integer>(graph);
         System.out.println("Diameter = " + pds.getDiameter());
         System.out.println("Radius = " + pds.getRadius());
-        long elapsedTime = System.currentTimeMillis() - start;
+        long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("Elapsed time = " + elapsedTime / 1000.0 + " s");
     }
 
-    private static Hypergraph<Integer, Integer> loadGraph(String path) {
-        Hypergraph<Integer, Integer> graph = null;
-        PajekNetReader<Graph<Integer, Integer>, Integer, Integer> pnr = new PajekNetReader<>(
-            createFactory(), createFactory()
-        );
-
-        System.out.println("Loading graph from the " + path + " file");
-        try {
-            graph = pnr.load(path, new SparseMultigraph<Integer, Integer>());
-        } catch (IOException e) {
-            System.out.println("Failed to load graph");
-            e.printStackTrace();
-        }
-        System.out.println("Graph successfully loaded.");
+    private static Hypergraph<Integer, Integer> loadGraph(String path) throws IOException {
+    	Hypergraph<Integer, Integer> graph = new PajekNetReader<>(createIntegerFactory(), createIntegerFactory()).load(path, new AdjacencyListGraph<Integer, Integer>());
         return graph;
     }
 
-    private static Factory<Integer> createFactory() {
+    private static Factory<Integer> createIntegerFactory() {
         return new Factory<Integer>() {
             private int n = 0;
 
