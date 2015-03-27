@@ -14,6 +14,8 @@ import javafx.util.Pair;
 /**
  * An implementation of <code>Graph</code> which represents the graph as an adjacency list and
  * permits directed or undirected edges only.
+ * 
+ * @author Andrey Kurchanov
  */
 public class AdjacencyListGraph<V,E>
 	extends AbstractGraph<V,E>
