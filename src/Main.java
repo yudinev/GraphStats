@@ -18,12 +18,14 @@ public class Main {
     public static void main(String[] args) {
         String  path;
         Hypergraph<Integer, Integer> graph = null;
+        int numberOfThreads;
         ParallelDistanceStatistics<Integer, Integer> pds;
 
-        if (args.length != 1) {
-            throw new IllegalArgumentException("Usage: java -jar GraphStats.jar <PathToGraphFile>");
+        if (args.length != 2) {
+        	throw new IllegalArgumentException("Usage: java -jar GraphStats.jar <PathToGraphFile> <NumberOfThreads>");
         } else {
             path = args[0];
+            numberOfThreads = Integer.valueOf(args[1]);
         }
 
         System.out.println("Loading graph from the " + path + " file");
@@ -41,7 +43,7 @@ public class Main {
         	System.out.println("Edges = " + graph.getEdgeCount());
         
         long startTime = System.currentTimeMillis();
-        pds  = new ParallelDistanceStatistics<Integer, Integer>(graph);
+        pds  = new ParallelDistanceStatistics<Integer, Integer>(graph, numberOfThreads);
         System.out.println("Diameter = " + pds.getDiameter());
         System.out.println("Radius = " + pds.getRadius());
         long elapsedTime = System.currentTimeMillis() - startTime;
