@@ -1,11 +1,11 @@
 package com.asoiu.simbigraph.algorithms.shortestpath;
 
-import edu.uci.ics.jung.graph.Hypergraph;
-import javafx.util.Pair;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.PriorityQueue;
+
+import edu.uci.ics.jung.graph.Hypergraph;
+
+import javafx.util.Pair;
 
 /**
  * This is parallel version of
@@ -15,30 +15,30 @@ import java.util.PriorityQueue;
  * @see edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath
  */
 public class ParallelUnweightedShortestPath<V, E> {
-    private Hypergraph<V, E> mGraph;
+    private Hypergraph<V, E> graph;
 
     /**
      * Constructs and initializes algorithm
      *
-     * @param g the graph
+     * @param graph the graph
      */
-    public ParallelUnweightedShortestPath(Hypergraph<V, E> g) {
-        this.mGraph = g;
+    public ParallelUnweightedShortestPath(Hypergraph<V, E> graph) {
+        this.graph = graph;
     }
 
     /**
-     * Computes the shortest path distances from a given node to all other
-     * nodes.
+     * Computes the shortest path distances from a given vertex to all other
+     * vertices.
      *
-     * @param source the source node
+     * @param source the source vertex
      */
     public int getEccentricity(V source) {
-        int ecc = 0;
-        Map<V, Integer> distances = new HashMap<V, Integer>();
-        for (V v : mGraph.getVertices()) {
-            distances.put(v, Integer.MAX_VALUE);
-        }
-        distances.replace(source, 0);
+    	int ecc = 0;
+    	int[] distances = new int[graph.getVertexCount()];
+        for (int i = 0; i < distances.length; i++) {
+        	distances[i] = Integer.MAX_VALUE;
+        }	
+        distances[(Integer) source] = 0;
         PriorityQueue<Pair<V, Integer>> q = new PriorityQueue<Pair<V, Integer>>(
             100, new Comparator<Pair<V, Integer>>() {
             @Override
@@ -50,23 +50,22 @@ public class ParallelUnweightedShortestPath<V, E> {
         q.add(new Pair<V, Integer>(source, 0));
         Pair<V, Integer> tempPair;
         V v;
-        Integer cur_d;
+        int cur_d;
         while (!q.isEmpty()) {
         	tempPair = q.poll();
         	v = tempPair.getKey();
         	cur_d = tempPair.getValue();
-            if (cur_d > distances.get(v)) {
+            if (cur_d > distances[(Integer) v]) {
                 continue;
             }
-            for (V neighbor : mGraph.getNeighbors(v)) {
-                if (distances.get(v) + 1 < distances.get(neighbor)) {
-                    distances.replace(neighbor, distances.get(v) + 1);
-                    q.add(new Pair<V, Integer>(neighbor, distances.get(v) + 1));
+            for (V neighbor : graph.getSuccessors(v)) {
+                if (distances[(Integer) v] + 1 < distances[(Integer) neighbor]) {
+                    distances[(Integer) neighbor] = distances[(Integer) v] + 1;
+                    q.add(new Pair<V, Integer>(neighbor, distances[(Integer) neighbor]));
                 }
             }
-            if (distances.get(v) > ecc) {
-                ecc = distances.get(v);
-            }
+            if (distances[(Integer) v] > ecc)
+                ecc = distances[(Integer) v];
         }
         return ecc;
     }
