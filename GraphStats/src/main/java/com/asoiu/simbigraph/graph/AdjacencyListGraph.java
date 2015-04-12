@@ -29,12 +29,7 @@ public class AdjacencyListGraph<V,E> extends AbstractGraph<V,E> {
 
     @Override
     public boolean containsVertex(V vertex) {
-        for (V v : mGraph.keySet()) {
-            if (v.equals(vertex)) {
-                return true;
-            }
-        }
-        return false;
+        return mGraph.containsKey(vertex);
     }
 
     @Override
@@ -63,7 +58,9 @@ public class AdjacencyListGraph<V,E> extends AbstractGraph<V,E> {
     @Override
     public boolean addVertex(V vertex) {
         // Add the vertex with an empty list of outgoing edges.
-        mGraph.put(vertex, new ArrayList<>());
+    	if (containsVertex(vertex) == false) {
+    		mGraph.put(vertex, new ArrayList<>());
+    	}
         return true;
     }
 
@@ -102,12 +99,14 @@ public class AdjacencyListGraph<V,E> extends AbstractGraph<V,E> {
     public boolean addEdge(E edge, edu.uci.ics.jung.graph.util.Pair<? extends V> endpoints, EdgeType edgeType) {
         this.edgeType = edgeType;
 
-        // Add the edge.
-        if (edgeType == EdgeType.UNDIRECTED) {
-            mGraph.get(endpoints.getFirst()).add(endpoints.getSecond());
-            mGraph.get(endpoints.getSecond()).add(endpoints.getFirst());
-        } else {
-            mGraph.get(endpoints.getFirst()).add(endpoints.getSecond());
+        if (mGraph.get(endpoints.getFirst()).contains(endpoints.getSecond()) == false) {
+        	// Add the edge.
+        	if (edgeType == EdgeType.UNDIRECTED) {
+        		mGraph.get(endpoints.getFirst()).add(endpoints.getSecond());
+        		mGraph.get(endpoints.getSecond()).add(endpoints.getFirst());
+        	} else {
+        		mGraph.get(endpoints.getFirst()).add(endpoints.getSecond());
+        	}
         }
         return true;
     }
