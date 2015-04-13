@@ -58,7 +58,7 @@ public class AdjacencyListGraph<V,E> extends AbstractGraph<V,E> {
     @Override
     public boolean addVertex(V vertex) {
         // Add the vertex with an empty list of outgoing edges.
-    	if (containsVertex(vertex) == false) {
+    	if (!containsVertex(vertex)) {
     		mGraph.put(vertex, new ArrayList<>());
     	}
         return true;
@@ -177,4 +177,5 @@ public class AdjacencyListGraph<V,E> extends AbstractGraph<V,E> {
     public edu.uci.ics.jung.graph.util.Pair<V> getEndpoints(E edge) throws NotImplementedException {
         throw new NotImplementedException();
     }
+    
 }

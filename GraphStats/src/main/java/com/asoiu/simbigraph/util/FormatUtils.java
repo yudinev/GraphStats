@@ -1,6 +1,7 @@
 package com.asoiu.simbigraph.util;
 
 public class FormatUtils {
+	
     /**
      * Formats duration in nanoseconds in one of the following formats:
      * <ul>
@@ -28,4 +29,5 @@ public class FormatUtils {
         }
         return String.format("%d h %d min %d sec", durationSec/3600, (durationSec % 3600)/60, durationSec % 60);
     }
+    
 }

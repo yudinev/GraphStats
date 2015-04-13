@@ -1,8 +1,11 @@
 package com.asoiu.simbigraph.algorithms.shortestpath;
 
 import edu.uci.ics.jung.graph.Hypergraph;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.asoiu.simbigraph.algorithms.GraphStatsOperation;
 
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
@@ -15,9 +18,9 @@ import java.util.concurrent.ForkJoinPool;
  * @author Andrey Kurchanov
  * @see edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics
  */
-public class ParallelDistanceStatistics<V, E> {
+public class ParallelDistanceStatistics<V, E> implements GraphStatsOperation {
 
-    private static final Logger LOG = LogManager.getLogger(ParallelDistanceStatistics.class); //todo use async logger
+    private static final Logger LOG = LogManager.getLogger(ParallelDistanceStatistics.class); // TODO use async logger
 
     private Hypergraph<V, E> graph;
 
@@ -52,7 +55,8 @@ public class ParallelDistanceStatistics<V, E> {
      * This method uses Function and Parallel Stream features of JDK 1.8 and
      * custom ForkJoinPool for parallel execution.
      */
-    public void calculateEccentricities() {
+    @Override
+    public void execute() {
     	UnweightedShortestPath<V, E> d = new UnweightedShortestPath<>(graph);
     	vertices = graph.getVertices();
     	ForkJoinPool forkJoinPool = new ForkJoinPool(numberOfThreads);
@@ -71,7 +75,7 @@ public class ParallelDistanceStatistics<V, E> {
      *
      * @return the diameter of <code>graph</code>, ignoring edge weights.
      */
-    public int getDiameter() {
+    private int getDiameter() {
 		return (int) eccs[eccs.length - 1];
     }
 
@@ -82,7 +86,13 @@ public class ParallelDistanceStatistics<V, E> {
      *
      * @return the radius of <code>graph</code>, ignoring edge weights.
      */
-    public int getRadius() {
+    private int getRadius() {
     	return (int) eccs[0];
     }
+    
+    @Override
+    public String toString() {
+    	return "Diameter = " + getDiameter() + "\n" + "Radius = " + getRadius();
+    }
+    
 }

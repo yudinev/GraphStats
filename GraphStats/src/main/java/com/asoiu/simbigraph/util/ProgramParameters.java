@@ -1,15 +1,32 @@
 package com.asoiu.simbigraph.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * @author Stanislav Semochkin
- * @version 1.0 April 01, 2015
+ * @author Andrey Kurchanov
  */
 public class ProgramParameters {
 
+    private Map<String, Boolean> operations;
+    
     private String graphFile;
 
     private int threadCount;
-
+    
+   public ProgramParameters() {
+    	operations = new HashMap<String, Boolean>();
+    	operations.put("isDiameterRadiusRequested", false);
+	}
+   
+    public boolean getIsDiameterRadiusRequestedFlag() {
+    	return (boolean) operations.get("isDiameterRadiusRequested");
+    }
+    
+    public void setIsDiameterRadiusRequested() {
+    	operations.put("isDiameterRadiusRequested", true);
+    }
+    
     public String getGraphFile() {
         return graphFile;
     }
@@ -25,4 +42,5 @@ public class ProgramParameters {
     public void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
     }
+    
 }
