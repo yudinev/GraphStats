@@ -53,7 +53,7 @@ public class ParallelDistanceStatistics<V, E> {
      * custom ForkJoinPool for parallel execution.
      */
     public void calculateEccentricities() {
-    	ParallelUnweightedShortestPath<V, E> d = new ParallelUnweightedShortestPath<>(graph);
+    	UnweightedShortestPath<V, E> d = new UnweightedShortestPath<>(graph);
     	vertices = graph.getVertices();
     	ForkJoinPool forkJoinPool = new ForkJoinPool(numberOfThreads);
 		try {

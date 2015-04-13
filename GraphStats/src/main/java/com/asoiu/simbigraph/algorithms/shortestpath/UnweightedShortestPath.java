@@ -8,15 +8,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.PriorityQueue;
 
 /**
- * This is parallel version of
- * edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath class.
- *
  * @author Andrey Kurchanov
  * @see edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath
  */
-public class ParallelUnweightedShortestPath<V, E> {
+public class UnweightedShortestPath<V, E> {
 
-    private static final Logger LOG = LogManager.getLogger(ParallelUnweightedShortestPath.class); //todo use async logger
+    private static final Logger LOG = LogManager.getLogger(UnweightedShortestPath.class); //todo use async logger
 
     private Hypergraph<V, E> graph;
 
@@ -25,7 +22,7 @@ public class ParallelUnweightedShortestPath<V, E> {
      *
      * @param graph the graph
      */
-    public ParallelUnweightedShortestPath(Hypergraph<V, E> graph) {
+    public UnweightedShortestPath(Hypergraph<V, E> graph) {
         this.graph = graph;
     }
 
