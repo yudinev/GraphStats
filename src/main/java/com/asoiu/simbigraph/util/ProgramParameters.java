@@ -14,7 +14,7 @@ public class ProgramParameters {
 
     private int threadCount;
     
-   public ProgramParameters() {
+    public ProgramParameters() {
     	operations = new HashMap<String, Boolean>();
     	operations.put("isDiameterRadiusRequested", false);
 	}
@@ -26,8 +26,8 @@ public class ProgramParameters {
     public void setIsDiameterRadiusRequested() {
     	operations.put("isDiameterRadiusRequested", true);
     }
-    
-    public String getGraphFile() {
+	
+	public String getGraphFile() {
         return graphFile;
     }
 
