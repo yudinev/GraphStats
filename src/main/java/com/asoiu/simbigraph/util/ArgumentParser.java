@@ -50,7 +50,7 @@ public class ArgumentParser {
     	help = new HelpFormatter();
     }
 
-    public ProgramParameters parseCmdParameters(final String[] args) throws ParseException {
+    public ProgramParameters parseCmdParameters(final String[] args) throws ParseException, NumberFormatException {
     	ProgramParameters parameters = new ProgramParameters();
         try {
             final CommandLineParser parser = new PosixParser();
@@ -72,9 +72,9 @@ public class ArgumentParser {
             if (cmd.hasOption(graphPath.getOpt())) {
                 parameters.setThreadCount(Integer.parseInt(cmd.getOptionValue(threadCount.getOpt())));
             }
-        } catch (ParseException | NumberFormatException e) {
+        } catch (ParseException e) {
             help.printHelp("GraphStats", options);
-            System.exit(1);
+            throw new ParseException(e.getMessage());
         }
         return parameters;
     }

@@ -2,9 +2,6 @@ package com.asoiu.simbigraph.algorithms.shortestpath;
 
 import edu.uci.ics.jung.graph.Hypergraph;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.asoiu.simbigraph.algorithms.GraphStatsOperation;
 
 import java.util.Collection;
@@ -19,9 +16,7 @@ import java.util.concurrent.ForkJoinPool;
  * @see edu.uci.ics.jung.algorithms.shortestpath.DistanceStatistics
  */
 public class ParallelDistanceStatistics<V, E> implements GraphStatsOperation {
-
-    private static final Logger LOG = LogManager.getLogger(ParallelDistanceStatistics.class); // TODO use async logger
-
+	
     private Hypergraph<V, E> graph;
 
     private Collection<V> vertices;
@@ -63,7 +58,6 @@ public class ParallelDistanceStatistics<V, E> implements GraphStatsOperation {
 		try {
             eccs = forkJoinPool.submit(() -> vertices.stream().parallel().map(vertex -> d.getEccentricity(vertex)).sorted().toArray()).get();
         } catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -92,7 +86,7 @@ public class ParallelDistanceStatistics<V, E> implements GraphStatsOperation {
     
     @Override
     public String toString() {
-    	return "Diameter = " + getDiameter() + "\n" + "Radius = " + getRadius();
+    	return "Diameter = " + getDiameter() + ". Radius = " + getRadius() + ".";
     }
     
 }

@@ -16,8 +16,6 @@ import org.apache.commons.collections15.Factory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,7 @@ import java.util.List;
  */
 public class Main {
 
-	private static final Logger LOG = LogManager.getLogger(Main.class); // TODO config file appender
+	private static final Logger LOG = LogManager.getLogger(Main.class.getName());
 
     private static ProgramParameters parameters;
 
@@ -42,24 +40,24 @@ public class Main {
         graph = initGraph();
 
         if (graph.getVertexCount() == 0) {
-            LOG.info("Graph is empty.");
+            LOG.error("Graph is empty.");
             System.exit(1);
         }
-        LOG.info("Vertices = {}", graph.getVertexCount());
-        LOG.info("{} = {}", graph.getDefaultEdgeType() == EdgeType.DIRECTED ? "Arcs" : "Edges", graph.getEdgeCount());
+        LOG.info("Vertices = {}.", graph.getVertexCount());
+        LOG.info("{} = {}.", graph.getDefaultEdgeType() == EdgeType.DIRECTED ? "Arcs" : "Edges", graph.getEdgeCount());
         
         List<GraphStatsOperation> requestedOperation = new ArrayList<GraphStatsOperation>();
         if (parameters.getIsDiameterRadiusRequestedFlag()) {
         	requestedOperation.add(new ParallelDistanceStatistics<Integer, Integer>(graph, parameters.getThreadCount()));
         }
         if (requestedOperation.isEmpty()) {
-        	LOG.info("No one of available operations has been requested.");
+        	LOG.warn("No one of available operations has been requested.");
         } else {
 	        for (GraphStatsOperation graphStatsOperation : requestedOperation) {
 	        	startTime = System.nanoTime();
 	        	graphStatsOperation.execute();
 	        	LOG.info(graphStatsOperation);
-	        	LOG.info("Elapsed time = {}", FormatUtils.durationToHMS(System.nanoTime() - startTime));
+	        	LOG.info("Elapsed time = {}.", FormatUtils.durationToHMS(System.nanoTime() - startTime));
 			}
         }
     }
@@ -69,7 +67,8 @@ public class Main {
         try {
             parameters = parser.parseCmdParameters(args);
         } catch (ParseException | NumberFormatException e) {
-            LOG.debug("Can't parse cmd parameters");
+            LOG.error("Can't parse cmd parameters.");
+            LOG.debug("Can't parse cmd parameters. {}", e);
             System.exit(1);
         }
         return parameters;
@@ -79,13 +78,15 @@ public class Main {
         long startTime;
         Hypergraph<Integer, Integer> graph = null;
 
-        LOG.info("Loading graph from {}", parameters.getGraphFile());
+        LOG.info("Loading graph from {} file.", parameters.getGraphFile());
         startTime = System.nanoTime();
         try {
             graph = loadGraph(parameters.getGraphFile());
-            LOG.info("Graph successfully loaded in {} ", FormatUtils.durationToHMS(System.nanoTime() - startTime));
+            LOG.info("Graph successfully loaded in {}.", FormatUtils.durationToHMS(System.nanoTime() - startTime));
         } catch (IOException e) {
-            LOG.debug("Failed to load graph. {}", e);
+        	LOG.error("Failed to load graph from {} file.", parameters.getGraphFile());
+            LOG.debug("Failed to load graph from {} file. {}", parameters.getGraphFile(), e);
+            System.exit(1);
         }
         return graph;
     }

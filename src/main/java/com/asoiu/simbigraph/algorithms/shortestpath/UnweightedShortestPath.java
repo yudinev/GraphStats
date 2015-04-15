@@ -2,8 +2,6 @@ package com.asoiu.simbigraph.algorithms.shortestpath;
 
 import edu.uci.ics.jung.graph.Hypergraph;
 import javafx.util.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.PriorityQueue;
 
@@ -12,8 +10,6 @@ import java.util.PriorityQueue;
  * @see edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath
  */
 public class UnweightedShortestPath<V, E> {
-
-    private static final Logger LOG = LogManager.getLogger(UnweightedShortestPath.class); //todo use async logger
 
     private Hypergraph<V, E> graph;
 

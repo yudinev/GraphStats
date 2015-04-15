@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.asoiu</groupId>
+    <groupId>com.asoiu.simbigraph</groupId>
     <artifactId>GraphStats</artifactId>
     <version>1.1</version>
 
@@ -52,6 +52,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+				<targetPath>${project.build.directory}/resources</targetPath>
             </resource>
         </resources>
 
@@ -91,10 +92,13 @@
                     <archive>
                         <manifest>
                             <mainClass>com.asoiu.simbigraph.Main</mainClass>
-                            <packageName>com.asoiu</packageName>
+                            <packageName>com.asoiu.simbigraph</packageName>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
+                        <manifestEntries>
+            				<Class-Path>resources/</Class-Path>
+						</manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
