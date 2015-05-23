@@ -27,7 +27,6 @@ public class ParallelDistanceStatistics<V, E> implements GraphStatsOperation {
 
     /**
      * Constructs and initializes class.
-     * Also this method run <code>calculateEccentricities()</code> method.
      *
      * @param graph the graph
      * @param numberOfThreads number of parallel threads
@@ -47,7 +46,7 @@ public class ParallelDistanceStatistics<V, E> implements GraphStatsOperation {
      * vertices), the value associated with the vertex into <code>eccs</code>
      * array will be 0.
      * <p>
-     * This method uses Function and Parallel Stream features of JDK 1.8 and
+     * This method uses Function and Parallel Stream features of Java 1.8 and
      * custom ForkJoinPool for parallel execution.
      */
     @Override
