@@ -1,5 +1,8 @@
 package com.asoiu.simbigraph.util;
 
+/**
+ * @author Andrey Kurchanov
+ */
 public class FormatUtils {
 	
     /**
@@ -11,6 +14,7 @@ public class FormatUtils {
      * <li> #h #min #sec - otherwise
      * </ul>
      *
+     * @author Andrey Kurchanov
      * @param durationNanos duration
      * @return formatted duration
      */
@@ -19,15 +23,14 @@ public class FormatUtils {
         if (durationMills < 1000) {
             return durationMills + " ms";
         }
-
         long durationSec = durationMills / 1000;
         if (durationSec < 60) {
             return String.format("%d sec %d ms", durationSec, durationMills % 1000);
         }
-        if (durationSec < 60*60) {
-            return String.format("%d min %d sec", durationSec/60, durationSec % 60);
+        if (durationSec < 60 * 60) {
+            return String.format("%d min %d sec", durationSec / 60, durationSec % 60);
         }
-        return String.format("%d h %d min %d sec", durationSec/3600, (durationSec % 3600)/60, durationSec % 60);
+        return String.format("%d h %d min %d sec", durationSec / 3600, (durationSec % 3600) / 60, durationSec % 60);
     }
     
 }

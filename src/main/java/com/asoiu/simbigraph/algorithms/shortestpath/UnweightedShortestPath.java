@@ -7,27 +7,29 @@ import java.util.PriorityQueue;
 
 /**
  * @author Andrey Kurchanov
- * @see edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath
  */
 public class UnweightedShortestPath<V, E> {
 
     private Hypergraph<V, E> graph;
 
     /**
-     * Constructs and initializes algorithm
+     * Constructs and initializes the class.
      *
+     * @author Andrey Kurchanov
      * @param graph the graph
      */
     public UnweightedShortestPath(Hypergraph<V, E> graph) {
         this.graph = graph;
     }
 
-    /**
-     * Computes the shortest path distances from a given vertex to all other
-     * vertices.
-     *
-     * @param source the source vertex
-     */
+	/**
+	 * Calculates the shortest path distances from a given <code>source</code>
+	 * vertex to all other vertices, ignoring edge weights.
+	 *
+	 * @author Andrey Kurchanov
+	 * @param source the source vertex
+	 * @return eccentricity of the <code>source</code> vertex
+	 */
     public int getEccentricity(V source) {
     	int ecc = 0;
     	int[] distances = new int[graph.getVertexCount()];

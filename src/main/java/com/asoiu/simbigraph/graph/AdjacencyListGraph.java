@@ -7,8 +7,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.*;
 
 /**
- * An implementation of <code>Graph</code> which represents the graph as an adjacency list and
- * permits directed or undirected edges only.
+ * An implementation of <code>edu.uci.ics.jung.graph.Graph</code> which
+ * represents the graph as an adjacency list and permits directed or undirected
+ * edges only.
  *
  * @author Andrey Kurchanov
  */
