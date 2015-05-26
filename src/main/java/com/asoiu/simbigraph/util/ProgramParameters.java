@@ -12,19 +12,39 @@ public class ProgramParameters {
     
     private String graphFile;
 
-    private int threadCount;
+    private int numberOfThreads;
+    
+    private int numberOfRuns;
     
     public ProgramParameters() {
     	operations = new HashMap<String, Boolean>();
     	operations.put("isDiameterRadiusRequested", false);
+    	operations.put("isThreeSizeSubgraphsCountFullEnumerationRequested", false);
+    	operations.put("isThreeSizeSubgraphsCountSamplingRequested", false);
 	}
    
     public boolean getIsDiameterRadiusRequestedFlag() {
-    	return (boolean) operations.get("isDiameterRadiusRequested");
+    	return operations.get("isDiameterRadiusRequested");
     }
     
-    public void setIsDiameterRadiusRequested() {
+	public void setIsDiameterRadiusRequestedFlag() {
     	operations.put("isDiameterRadiusRequested", true);
+    }
+    
+    public boolean getIsThreeSizeSubgraphsCountFullEnumerationRequestedFlag() {
+    	return operations.get("isThreeSizeSubgraphsCountFullEnumerationRequested");
+    }
+    
+    public void setIsThreeSizeSubgraphsCountFullEnumerationRequestedFlag() {
+    	operations.put("isThreeSizeSubgraphsCountFullEnumerationRequested", true);
+    }
+    
+    public boolean getIsThreeSizeSubgraphsCountSamplingRequestedFlag() {
+    	return operations.get("isThreeSizeSubgraphsCountSamplingRequested");
+    }
+    
+    public void setIsThreeSizeSubgraphsCountSamplingRequestedFlag() {
+    	operations.put("isThreeSizeSubgraphsCountSamplingRequested", true);
     }
 	
 	public String getGraphFile() {
@@ -34,13 +54,21 @@ public class ProgramParameters {
     public void setGraphFile(String graphFile) {
         this.graphFile = graphFile;
     }
-
-    public int getThreadCount() {
-        return threadCount;
+    
+    public int getNumberOfRuns() {
+		return numberOfRuns;
+	}
+    
+    public void setNumberOfRuns(int numberOfRuns) {
+        this.numberOfRuns = numberOfRuns;
     }
 
-    public void setThreadCount(int threadCount) {
-        this.threadCount = threadCount;
+    public int getNumberOfThreads() {
+        return numberOfThreads;
+    }
+
+    public void setNumberOfThreads(int numberOfThreads) {
+        this.numberOfThreads = numberOfThreads;
     }
     
 }

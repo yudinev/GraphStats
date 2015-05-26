@@ -10,8 +10,10 @@ public class ArgumentParser {
 	private final Option graphPath;
     
     private final Option operations;
+    
+    private final Option numberOfRuns;
 
-    private final Option threadCount;
+    private final Option numberOfThreads;
     
     private final Options options;    
 
@@ -23,7 +25,7 @@ public class ArgumentParser {
     		.isRequired(true)
     		.hasArg(true)
     		.withLongOpt("file")
-    		.withDescription("This parameter sets path to the graph file.")
+    		.withDescription("This mandatory parameter sets path to the graph file.")
     		.create("f")
     	;
     	operations = OptionBuilder
@@ -31,25 +33,48 @@ public class ArgumentParser {
     		.isRequired(true)
     		.hasArg(true)
     		.withLongOpt("operations")
-    		.withDescription("List of available operations:\ndr - get diameter and radius of the graph\nseparated by comma.")
+    		.withDescription("List of available operations:\ndr - get diameter and radius of the graph,\n"
+    													  +"3scfe - get number of 3-size undirected subgraphs by full enumeration algorithm,\n"
+    													  +"3scs - get number of 3-size undirected subgraphs by sampling algorithm\nseparated by comma.")
     		.create("op")
     	;
-    	threadCount = OptionBuilder
+    	numberOfRuns = OptionBuilder
+        	.withType(Integer.class)
+        	.isRequired(false)
+        	.hasArg(true)
+        	.withLongOpt("runs")
+        	.withDescription("This parameter sets number of runs used by sampling algorithms only.")
+        	.create("r")
+    	;
+    	numberOfThreads = OptionBuilder
     		.withType(Integer.class)
     		.isRequired(true)
     		.hasArg(true)
-    		.withLongOpt("thread")
-    		.withDescription("This parameter sets count of parallel threads.")
+    		.withLongOpt("threads")
+    		.withDescription("This mandatory parameter sets number of parallel threads.")
     		.create("t")
     	;
     	options = new Options()
     		.addOption(graphPath)
     		.addOption(operations)
-    		.addOption(threadCount)
+    		.addOption(numberOfRuns)
+    		.addOption(numberOfThreads)
     	;
     	help = new HelpFormatter();
     }
 
+	/**
+	 * Parses input <code>args</code> and returns the instance of
+	 * <code>com.asoiu.simbigraph.util.ProgramParameters</code>.
+	 *
+	 * @author Andrey Kurchanov
+	 * @param args input arguments
+	 * @return the the instance of
+	 *         <code>com.asoiu.simbigraph.util.ProgramParameters</code> if input
+	 *         arguments were parsed successfully, otherwise
+	 *         <code>org.apache.commons.cli.ParseException</code> or
+	 *         <code>NumberFormatException</code> is thrown
+	 */
     public ProgramParameters parseCmdParameters(final String[] args) throws ParseException, NumberFormatException {
     	ProgramParameters parameters = new ProgramParameters();
         try {
@@ -62,15 +87,28 @@ public class ArgumentParser {
             	for (String string : cmd.getOptionValue(operations.getOpt()).split(",")) {
 					switch (string) {
 					case "dr":
-						parameters.setIsDiameterRadiusRequested();
+						parameters.setIsDiameterRadiusRequestedFlag();
+						break;
+					case "3scfe":
+						parameters.setIsThreeSizeSubgraphsCountFullEnumerationRequestedFlag();
+						break;
+					case "3scs":
+						parameters.setIsThreeSizeSubgraphsCountSamplingRequestedFlag();
 						break;
 					default:
 						break;
 					}
 				}
             }
-            if (cmd.hasOption(graphPath.getOpt())) {
-                parameters.setThreadCount(Integer.parseInt(cmd.getOptionValue(threadCount.getOpt())));
+            if (parameters.getIsThreeSizeSubgraphsCountSamplingRequestedFlag()) {
+            	if (cmd.hasOption(numberOfRuns.getOpt())) {
+            		parameters.setNumberOfRuns(Integer.parseInt(cmd.getOptionValue(numberOfRuns.getOpt())));
+            	} else {
+            		throw new ParseException("Missing required by sampling algorithm option: " + numberOfRuns.getOpt());
+				}
+            }
+            if (cmd.hasOption(numberOfThreads.getOpt())) {
+                parameters.setNumberOfThreads(Integer.parseInt(cmd.getOptionValue(numberOfThreads.getOpt())));
             }
         } catch (ParseException e) {
             help.printHelp("GraphStats", options);
