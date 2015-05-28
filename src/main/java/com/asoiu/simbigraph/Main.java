@@ -4,6 +4,7 @@ import com.asoiu.simbigraph.algorithms.GraphStatsOperation;
 import com.asoiu.simbigraph.algorithms.shortestpath.ParallelDistanceStatistics;
 import com.asoiu.simbigraph.algorithms.subgraph.ParallelThreeSizeSubgraphsCounterFullEnumeration;
 import com.asoiu.simbigraph.algorithms.subgraph.ParallelThreeSizeSubgraphsCounterSampling;
+import com.asoiu.simbigraph.exception.GraphStatsException;
 import com.asoiu.simbigraph.graph.AdjacencyListGraph;
 import com.asoiu.simbigraph.util.ArgumentParser;
 import com.asoiu.simbigraph.util.FormatUtils;
@@ -66,8 +67,13 @@ public class Main {
         } else {
 	        for (GraphStatsOperation graphStatsOperation : requestedOperation) {
 	        	startTime = System.nanoTime();
-	        	graphStatsOperation.execute();
-	        	LOG.info(graphStatsOperation);
+	        	try {
+					graphStatsOperation.execute();
+					LOG.info(graphStatsOperation);
+				} catch (GraphStatsException e) {
+					LOG.error(e.getMessage());
+					LOG.debug(e);
+				}
 	        	LOG.info("Elapsed time = {}.", FormatUtils.durationToHMS(System.nanoTime() - startTime));
 			}
         }

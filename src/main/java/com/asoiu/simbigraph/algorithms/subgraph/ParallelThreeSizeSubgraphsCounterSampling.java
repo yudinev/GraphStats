@@ -10,8 +10,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
 import com.asoiu.simbigraph.algorithms.GraphStatsOperation;
+import com.asoiu.simbigraph.exception.UnsupportedEdgeTypeException;
 
 import edu.uci.ics.jung.graph.Hypergraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
  * This is parallel version of 3-size undirected subgraphs counter which uses
@@ -83,15 +85,23 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
 	 * Approximate number of the <code>graph</code>'s "triangles" is calculated
 	 * as number of explored <code>graph</code>'s "triangles" divided by three
 	 * times number of runs of sampling algorithm and multiplied by exact number
-	 * of the <code>graph</code>'s "forks".
+	 * of the <code>graph</code>'s "forks".<br>
+	 * If the <code>graph</code> includes directed edges then
+	 * <code>com.asoiu.simbigraph.exception.UnsupportedEdgeTypeException</code>
+	 * is thrown.
 	 * <p>
 	 * The method uses Function and Parallel Stream features of Java 1.8 and
 	 * custom ForkJoinPool for parallel execution.
 	 * 
 	 * @author Andrey Kurchanov
+	 * @throws UnsupportedEdgeTypeException 
 	 */
 	@Override
-	public void execute() {
+	public void execute() throws UnsupportedEdgeTypeException {
+		if (graph.getDefaultEdgeType() == EdgeType.DIRECTED) {
+			throw new UnsupportedEdgeTypeException("The parallel version of 3-size subgraphs counter which uses random carcasses sampling algorithm does not work with " + graph.getDefaultEdgeType() + " graph.");
+		}
+		
 		Collection<V> vertices = graph.getVertices();
 		Map<Integer, VertexLayerParameters<V>> vertexLayers = new HashMap<>();
 		int numberOfVertexSuccessors;

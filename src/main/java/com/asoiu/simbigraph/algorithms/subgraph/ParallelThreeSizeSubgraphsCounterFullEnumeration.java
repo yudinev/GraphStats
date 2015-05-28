@@ -5,8 +5,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
 import com.asoiu.simbigraph.algorithms.GraphStatsOperation;
+import com.asoiu.simbigraph.exception.UnsupportedEdgeTypeException;
 
 import edu.uci.ics.jung.graph.Hypergraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
  * This is parallel version of 3-size undirected subgraphs counter which uses
@@ -35,18 +37,26 @@ public class ParallelThreeSizeSubgraphsCounterFullEnumeration<V, E> implements G
     }
 	
 	/**
-	 * Saves exact number of the <code>graph</code>'s "triangles" into
-	 * <code>numberOfTriangles</code> variable.
+	 * Saves exact number of the <code>graph</code>'s "triangles"
+	 * into <code>numberOfTriangles</code> variable.<br>
 	 * Saves exact number of the <code>graph</code>'s "forks" into
-	 * <code>numberOfForks</code> variable.
+	 * <code>numberOfForks</code> variable.<br>
+	 * If the <code>graph</code> includes directed edges then
+	 * <code>com.asoiu.simbigraph.exception.UnsupportedEdgeTypeException</code>
+	 * is thrown.
 	 * <p>
 	 * The method uses Function and Parallel Stream features of Java 1.8 and
 	 * custom ForkJoinPool for parallel execution.
 	 * 
 	 * @author Andrey Kurchanov
+	 * @throws UnsupportedEdgeTypeException
 	 */
 	@Override
-	public void execute() {
+	public void execute() throws UnsupportedEdgeTypeException {
+		if (graph.getDefaultEdgeType() == EdgeType.DIRECTED) {
+			throw new UnsupportedEdgeTypeException("The parallel version of 3-size subgraphs counter which uses full enumeration algorithm does not work with " + graph.getDefaultEdgeType() + " graph.");
+		}
+		
 		ThreeSizeSubgraphsCounterFullEnumeration<V, E> counter = new ThreeSizeSubgraphsCounterFullEnumeration<>(graph);
 		Collection<V> vertices = graph.getVertices();
     	
