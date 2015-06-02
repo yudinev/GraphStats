@@ -41,7 +41,7 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
 	 */
     protected static class VertexLayerParameters<V> {
 		
-		private float probability;		
+    	private double probability;
 		
 		private List<V> vertices = new ArrayList<>();
 		
@@ -49,7 +49,7 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
 			vertices = new ArrayList<>();
 		}
 		
-		public float getProbability() {
+		public double getProbability() {
 			return probability;
 		}
 
@@ -126,7 +126,7 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
 		
 		// Calculate probability of selection for each layer of the vertices
     	for (Entry<Integer, VertexLayerParameters<V>> vertexLayer : vertexLayers.entrySet()) {
-    		vertexLayer.getValue().probability = vertexLayer.getValue().vertices.size() * vertexLayer.getKey() * (vertexLayer.getKey() - 1) / (2.0f * exactNumberOfForks);
+    		vertexLayer.getValue().probability = (double)(vertexLayer.getValue().vertices.size() * vertexLayer.getKey() * (vertexLayer.getKey() - 1)) / (double)(2 * exactNumberOfForks);
     	}
     	
     	ThreeSizeSubgraphsCounterSampling<V, E> counter = new ThreeSizeSubgraphsCounterSampling<>(graph, vertexLayers);
@@ -142,8 +142,8 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
         } catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		approximateNumberOfForks = (int) ((float)exploredNumberOfForks / numberOfRuns * exactNumberOfForks);
-		approximateNumberOfTriangles = (int) ((float)exploredNumberOfTriangles / numberOfRuns * exactNumberOfForks / 3);
+		approximateNumberOfForks = (int) ((double)exploredNumberOfForks / numberOfRuns * exactNumberOfForks);
+		approximateNumberOfTriangles = (int) ((double)exploredNumberOfTriangles / numberOfRuns * exactNumberOfForks / 3);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
 	@Override
     public String toString() {
 		int approximateNumberOfSubgraphs = approximateNumberOfForks + approximateNumberOfTriangles;
-    	return String.format("Number of forks = %d(%.3f%%). Number of triangles = %d(%.3f%%).", approximateNumberOfForks, (float)approximateNumberOfForks/approximateNumberOfSubgraphs * 100.0, approximateNumberOfTriangles, (float)approximateNumberOfTriangles/approximateNumberOfSubgraphs * 100.0);
+    	return String.format("Number of forks = %d(%.3f%%). Number of triangles = %d(%.3f%%).", approximateNumberOfForks, (double)approximateNumberOfForks/approximateNumberOfSubgraphs * 100.0, approximateNumberOfTriangles, (double)approximateNumberOfTriangles/approximateNumberOfSubgraphs * 100.0);
     }
 
 }

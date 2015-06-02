@@ -75,7 +75,7 @@ public class ParallelThreeSizeSubgraphsCounterFullEnumeration<V, E> implements G
 	@Override
     public String toString() {
 		int numberOfSubgraphs = numberOfForks + numberOfTriangles;		
-    	return String.format("Number of forks = %d(%.3f%%). Number of triangles = %d(%.3f%%).", numberOfForks, (float)numberOfForks/numberOfSubgraphs * 100.0, numberOfTriangles, (float)numberOfTriangles/numberOfSubgraphs * 100.0);
+    	return String.format("Number of forks = %d(%.3f%%). Number of triangles = %d(%.3f%%).", numberOfForks, (double)numberOfForks/numberOfSubgraphs * 100.0, numberOfTriangles, (double)numberOfTriangles/numberOfSubgraphs * 100.0);
     }
 
 }
