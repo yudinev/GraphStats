@@ -21,6 +21,8 @@ public class ProgramParameters {
     	operations.put("isDiameterRadiusRequested", false);
     	operations.put("isThreeSizeSubgraphsCountFullEnumerationRequested", false);
     	operations.put("isThreeSizeSubgraphsCountSamplingRequested", false);
+    	operations.put("isFourSizeSubgraphsCountFullEnumerationRequested", false);
+    	operations.put("isFourSizeSubgraphsCountSamplingRequested", false);
 	}
    
     public boolean getIsDiameterRadiusRequestedFlag() {
@@ -45,6 +47,22 @@ public class ProgramParameters {
     
     public void setIsThreeSizeSubgraphsCountSamplingRequestedFlag() {
     	operations.put("isThreeSizeSubgraphsCountSamplingRequested", true);
+    }
+    
+    public boolean getIsFourSizeSubgraphsCountFullEnumerationRequestedFlag() {
+    	return operations.get("isFourSizeSubgraphsCountFullEnumerationRequested");
+    }
+    
+    public void setIsFourSizeSubgraphsCountFullEnumerationRequestedFlag() {
+    	operations.put("isFourSizeSubgraphsCountFullEnumerationRequested", true);
+    }
+    
+    public boolean getIsFourSizeSubgraphsCountSamplingRequestedFlag() {
+    	return operations.get("isFourSizeSubgraphsCountSamplingRequested");
+    }
+    
+    public void setIsFourSizeSubgraphsCountSamplingRequestedFlag() {
+    	operations.put("isFourSizeSubgraphsCountSamplingRequested", true);
     }
 	
 	public String getGraphFile() {

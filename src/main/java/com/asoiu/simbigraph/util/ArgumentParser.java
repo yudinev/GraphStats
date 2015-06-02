@@ -35,7 +35,9 @@ public class ArgumentParser {
     		.withLongOpt("operations")
     		.withDescription("List of available operations:\ndr - get diameter and radius of the graph,\n"
     													  +"3scfe - get number of 3-size undirected subgraphs by full enumeration algorithm,\n"
-    													  +"3scs - get number of 3-size undirected subgraphs by sampling algorithm\nseparated by comma.")
+    													  +"3scs - get number of 3-size undirected subgraphs by sampling algorithm,\n"
+    													  +"4scfe - get number of 4-size undirected subgraphs by full enumeration algorithm,\n"
+    													  +"4scs - get number of 4-size undirected subgraphs by sampling algorithm\nseparated by comma.")
     		.create("op")
     	;
     	numberOfRuns = OptionBuilder
@@ -95,12 +97,18 @@ public class ArgumentParser {
 					case "3scs":
 						parameters.setIsThreeSizeSubgraphsCountSamplingRequestedFlag();
 						break;
+					case "4scfe":
+						parameters.setIsFourSizeSubgraphsCountFullEnumerationRequestedFlag();
+						break;
+					case "4scs":
+						parameters.setIsFourSizeSubgraphsCountSamplingRequestedFlag();
+						break;
 					default:
 						break;
 					}
 				}
             }
-            if (parameters.getIsThreeSizeSubgraphsCountSamplingRequestedFlag()) {
+            if (parameters.getIsThreeSizeSubgraphsCountSamplingRequestedFlag() || parameters.getIsFourSizeSubgraphsCountSamplingRequestedFlag()) {
             	if (cmd.hasOption(numberOfRuns.getOpt())) {
             		parameters.setNumberOfRuns(Integer.parseInt(cmd.getOptionValue(numberOfRuns.getOpt())));
             	} else {

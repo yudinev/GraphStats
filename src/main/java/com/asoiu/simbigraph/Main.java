@@ -2,6 +2,8 @@ package com.asoiu.simbigraph;
 
 import com.asoiu.simbigraph.algorithms.GraphStatsOperation;
 import com.asoiu.simbigraph.algorithms.shortestpath.ParallelDistanceStatistics;
+import com.asoiu.simbigraph.algorithms.subgraph.ParallelFourSizeSubgraphsCounterFullEnumeration;
+import com.asoiu.simbigraph.algorithms.subgraph.ParallelFourSizeSubgraphsCounterSampling;
 import com.asoiu.simbigraph.algorithms.subgraph.ParallelThreeSizeSubgraphsCounterFullEnumeration;
 import com.asoiu.simbigraph.algorithms.subgraph.ParallelThreeSizeSubgraphsCounterSampling;
 import com.asoiu.simbigraph.exception.GraphStatsException;
@@ -61,6 +63,12 @@ public class Main {
         }
         if (parameters.getIsThreeSizeSubgraphsCountSamplingRequestedFlag()) {
         	requestedOperation.add(new ParallelThreeSizeSubgraphsCounterSampling<Integer, Integer>(graph, parameters.getNumberOfRuns(), parameters.getNumberOfThreads()));
+		}
+        if (parameters.getIsFourSizeSubgraphsCountFullEnumerationRequestedFlag()) {
+        	requestedOperation.add(new ParallelFourSizeSubgraphsCounterFullEnumeration<Integer, Integer>(graph, parameters.getNumberOfThreads()));
+		}
+        if (parameters.getIsFourSizeSubgraphsCountSamplingRequestedFlag()) {
+        	requestedOperation.add(new ParallelFourSizeSubgraphsCounterSampling<Integer, Integer>(graph, parameters.getNumberOfRuns(), parameters.getNumberOfThreads()));
 		}
         if (requestedOperation.isEmpty()) {
         	LOG.warn("No one of available operations has been requested.");
