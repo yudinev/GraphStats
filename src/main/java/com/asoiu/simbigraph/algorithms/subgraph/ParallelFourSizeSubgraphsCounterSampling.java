@@ -31,11 +31,11 @@ public class ParallelFourSizeSubgraphsCounterSampling<V, E> implements GraphStat
 
     private int numberOfThreads;
     
-    private int exploredNumberOfSubgraphs4_1, exploredNumberOfSubgraphs4_2, exploredNumberOfSubgraphs4_3, exploredNumberOfSubgraphs4_4, exploredNumberOfSubgraphs4_5, exploredNumberOfSubgraphs4_6;
+    private long exploredNumberOfSubgraphs4_1, exploredNumberOfSubgraphs4_2, exploredNumberOfSubgraphs4_3, exploredNumberOfSubgraphs4_4, exploredNumberOfSubgraphs4_5, exploredNumberOfSubgraphs4_6;
     
     private int approximateNumberOfSubgraphs4_1, approximateNumberOfSubgraphs4_2, approximateNumberOfSubgraphs4_3, approximateNumberOfSubgraphs4_4, approximateNumberOfSubgraphs4_5, approximateNumberOfSubgraphs4_6;
     
-    int[] resultsArray;
+    List<Integer> resultsList;
     
 	/**
 	 * This nested static class is used to store parameters of each layer of the
@@ -106,7 +106,7 @@ public class ParallelFourSizeSubgraphsCounterSampling<V, E> implements GraphStat
 	/**
 	 * Saves number of explored <code>graph</code>'s subgraphs4_1 into
 	 * <code>exploredNumberOfSubgraphs4_1</code> variable.<br>
-	 * Saves results of runs of the algorithm into <code>resultsArray</code>.<br>
+	 * Saves results of runs of the algorithm into <code>resultsList</code>.<br>
 	 * If the algorithm returns 6, than subgraph4_6 was explored.<br>
 	 * If the algorithm returns 5, than subgraph4_5 was explored.<br>
 	 * If the algorithm returns 4, than subgraph4_4 was explored.<br>
@@ -228,32 +228,16 @@ public class ParallelFourSizeSubgraphsCounterSampling<V, E> implements GraphStat
     	ForkJoinPool forkJoinPool = new ForkJoinPool(numberOfThreads);
 		try {
 			forkJoinPool.submit(() -> exploredNumberOfSubgraphs4_1 = resultsOfRuns.stream().parallel().mapToInt(resultOfRun -> counter.searchSubgraphs4_1()).sum()).get();
-			forkJoinPool.submit(() -> resultsArray = resultsOfRuns.stream().parallel().mapToInt(resultOfRun -> counter.searchOtherTypesOfSubgraphs()).toArray()).get();
+			forkJoinPool.submit(() -> resultsList = resultsOfRuns.stream().parallel().map(resultOfRun -> counter.searchOtherTypesOfSubgraphs()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll)).get();
+			forkJoinPool.submit(() -> exploredNumberOfSubgraphs4_6 = resultsList.stream().parallel().filter(result -> result == 6).count()).get();
+			forkJoinPool.submit(() -> exploredNumberOfSubgraphs4_5 = resultsList.stream().parallel().filter(result -> result == 5).count()).get();
+			forkJoinPool.submit(() -> exploredNumberOfSubgraphs4_4 = resultsList.stream().parallel().filter(result -> result == 4).count()).get();
+			forkJoinPool.submit(() -> exploredNumberOfSubgraphs4_3 = resultsList.stream().parallel().filter(result -> result == 3).count()).get();
+			forkJoinPool.submit(() -> exploredNumberOfSubgraphs4_2 = resultsList.stream().parallel().filter(result -> result == 2).count()).get();
         } catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
 		approximateNumberOfSubgraphs4_1 = (int) ((double)exploredNumberOfSubgraphs4_1 / numberOfRuns * exactNumberOfSubgraphs4_1);
-		for (int result : resultsArray) {
-			switch (result) {
-			case 6:
-				exploredNumberOfSubgraphs4_6++;
-				break;
-			case 5:
-				exploredNumberOfSubgraphs4_5++;
-				break;
-			case 4:
-				exploredNumberOfSubgraphs4_4++;
-				break;
-			case 3:
-				exploredNumberOfSubgraphs4_3++;
-				break;
-			case 2:
-				exploredNumberOfSubgraphs4_2++;
-				break;				
-			default:
-				break;
-			}
-		}
 		approximateNumberOfSubgraphs4_2 = (int) ((double)exploredNumberOfSubgraphs4_2 / numberOfRuns * exactNumberOfPathsOfLengthThree);
 		approximateNumberOfSubgraphs4_3 = (int) ((double)exploredNumberOfSubgraphs4_3 / numberOfRuns * exactNumberOfPathsOfLengthThree / 2);
 		approximateNumberOfSubgraphs4_4 = (int) ((double)exploredNumberOfSubgraphs4_4 / numberOfRuns * exactNumberOfPathsOfLengthThree / 4);
