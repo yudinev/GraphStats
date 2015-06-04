@@ -187,7 +187,7 @@ public class ParallelFourSizeSubgraphsCounterSampling<V, E> implements GraphStat
 		
 		// Calculate probability of selection for each layer of the vertices
     	for (Entry<Integer, VertexLayerParameters<V>> vertexLayer : vertexLayers.entrySet()) {
-    		vertexLayer.getValue().probability = (double)(vertexLayer.getValue().vertices.size() * vertexLayer.getKey() * (vertexLayer.getKey() - 1) * (vertexLayer.getKey() - 2)) / (double)(6 * exactNumberOfSubgraphs4_1);
+    		vertexLayer.getValue().probability = (vertexLayer.getValue().vertices.size() * vertexLayer.getKey() * (vertexLayer.getKey() - 1) * (vertexLayer.getKey() - 2)) / (6.0 * exactNumberOfSubgraphs4_1);
     	}
 
     	Collection<E> edges = graph.getEdges();
@@ -216,7 +216,7 @@ public class ParallelFourSizeSubgraphsCounterSampling<V, E> implements GraphStat
 		
 		// Calculate probability of selection for each layer of the edges
     	for (Entry<Integer, EdgeLayerParameters<E>> edgeLayer : edgeLayers.entrySet()) {
-    		edgeLayer.getValue().probability = (double)(edgeLayer.getValue().edges.size() * edgeLayer.getKey()) / (double)exactNumberOfPathsOfLengthThree;
+    		edgeLayer.getValue().probability = (edgeLayer.getValue().edges.size() * edgeLayer.getKey()) / (double)exactNumberOfPathsOfLengthThree;
     	}
     	
     	FourSizeSubgraphsCounterSampling<V, E> counter = new FourSizeSubgraphsCounterSampling<>(graph, vertexLayers, edgeLayers);
@@ -273,12 +273,12 @@ public class ParallelFourSizeSubgraphsCounterSampling<V, E> implements GraphStat
     					    +"Number of subgraphs4_4 = %d(%.3f%%). "
     					    +"Number of subgraphs4_5 = %d(%.3f%%). "
     					    +"Number of subgraphs4_6 = %d(%.3f%%).",
-    					    approximateNumberOfSubgraphs4_1, (double)approximateNumberOfSubgraphs4_1/approximateNumberOfSubgraphs * 100.0,
-    					    approximateNumberOfSubgraphs4_2, (double)approximateNumberOfSubgraphs4_2/approximateNumberOfSubgraphs * 100.0,
-    					    approximateNumberOfSubgraphs4_3, (double)approximateNumberOfSubgraphs4_3/approximateNumberOfSubgraphs * 100.0,
-    					    approximateNumberOfSubgraphs4_4, (double)approximateNumberOfSubgraphs4_4/approximateNumberOfSubgraphs * 100.0,
-    					    approximateNumberOfSubgraphs4_5, (double)approximateNumberOfSubgraphs4_5/approximateNumberOfSubgraphs * 100.0,
-    					    approximateNumberOfSubgraphs4_6, (double)approximateNumberOfSubgraphs4_6/approximateNumberOfSubgraphs * 100.0);
+    					    approximateNumberOfSubgraphs4_1, (double)approximateNumberOfSubgraphs4_1 / approximateNumberOfSubgraphs * 100.0,
+    					    approximateNumberOfSubgraphs4_2, (double)approximateNumberOfSubgraphs4_2 / approximateNumberOfSubgraphs * 100.0,
+    					    approximateNumberOfSubgraphs4_3, (double)approximateNumberOfSubgraphs4_3 / approximateNumberOfSubgraphs * 100.0,
+    					    approximateNumberOfSubgraphs4_4, (double)approximateNumberOfSubgraphs4_4 / approximateNumberOfSubgraphs * 100.0,
+    					    approximateNumberOfSubgraphs4_5, (double)approximateNumberOfSubgraphs4_5 / approximateNumberOfSubgraphs * 100.0,
+    					    approximateNumberOfSubgraphs4_6, (double)approximateNumberOfSubgraphs4_6 / approximateNumberOfSubgraphs * 100.0);
     }
 
 }

@@ -95,12 +95,12 @@ public class ParallelFourSizeSubgraphsCounterFullEnumeration<V, E> implements Gr
     						+"Number of subgraphs4_4 = %d(%.3f%%). "
     						+"Number of subgraphs4_5 = %d(%.3f%%). "
     						+"Number of subgraphs4_6 = %d(%.3f%%).",
-    						numberOfSubgraphs4_1, (double)numberOfSubgraphs4_1/numberOfSubgraphs * 100.0, 
-    						numberOfSubgraphs4_2, (double)numberOfSubgraphs4_2/numberOfSubgraphs * 100.0,
-    						numberOfSubgraphs4_3, (double)numberOfSubgraphs4_3/numberOfSubgraphs * 100.0,
-    						numberOfSubgraphs4_4, (double)numberOfSubgraphs4_4/numberOfSubgraphs * 100.0,
-    						numberOfSubgraphs4_5, (double)numberOfSubgraphs4_5/numberOfSubgraphs * 100.0,
-    						numberOfSubgraphs4_6, (double)numberOfSubgraphs4_6/numberOfSubgraphs * 100.0);
+    						numberOfSubgraphs4_1, (double)numberOfSubgraphs4_1 / numberOfSubgraphs * 100.0, 
+    						numberOfSubgraphs4_2, (double)numberOfSubgraphs4_2 / numberOfSubgraphs * 100.0,
+    						numberOfSubgraphs4_3, (double)numberOfSubgraphs4_3 / numberOfSubgraphs * 100.0,
+    						numberOfSubgraphs4_4, (double)numberOfSubgraphs4_4 / numberOfSubgraphs * 100.0,
+    						numberOfSubgraphs4_5, (double)numberOfSubgraphs4_5 / numberOfSubgraphs * 100.0,
+    						numberOfSubgraphs4_6, (double)numberOfSubgraphs4_6 / numberOfSubgraphs * 100.0);
     }
 
 }

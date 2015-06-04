@@ -126,7 +126,7 @@ public class ParallelThreeSizeSubgraphsCounterSampling<V, E> implements GraphSta
 		
 		// Calculate probability of selection for each layer of the vertices
     	for (Entry<Integer, VertexLayerParameters<V>> vertexLayer : vertexLayers.entrySet()) {
-    		vertexLayer.getValue().probability = (double)(vertexLayer.getValue().vertices.size() * vertexLayer.getKey() * (vertexLayer.getKey() - 1)) / (double)(2 * exactNumberOfForks);
+    		vertexLayer.getValue().probability = (vertexLayer.getValue().vertices.size() * vertexLayer.getKey() * (vertexLayer.getKey() - 1)) / (2.0 * exactNumberOfForks);
     	}
     	
     	ThreeSizeSubgraphsCounterSampling<V, E> counter = new ThreeSizeSubgraphsCounterSampling<>(graph, vertexLayers);

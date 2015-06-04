@@ -41,10 +41,10 @@ public class ThreeSizeSubgraphsCounterSampling<V, E> {
 	public int doRun() {
 		Random randomGenerator = new Random();
 		double randomDoubleValue = randomGenerator.nextDouble();
-		while (randomDoubleValue == 0.0d) {
+		while (randomDoubleValue == 0.0) {
 			randomDoubleValue = randomGenerator.nextDouble();
 		}
-		double borderOfProbability = 0.0d;
+		double borderOfProbability = 0.0;
 		VertexLayerParameters<V> selectedVertexLayer = null;
 		
 		// Choose a layer of vertices taking into account the probabilities of layers selection

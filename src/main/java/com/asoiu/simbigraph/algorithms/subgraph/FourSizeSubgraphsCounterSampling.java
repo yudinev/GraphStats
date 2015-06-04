@@ -48,10 +48,10 @@ public class FourSizeSubgraphsCounterSampling<V, E> {
 	public int searchSubgraphs4_1() {
 		Random randomGenerator = new Random();
 		double randomDoubleValue = randomGenerator.nextDouble();
-		while (randomDoubleValue == 0.0d) {
+		while (randomDoubleValue == 0.0) {
 			randomDoubleValue = randomGenerator.nextDouble();
 		}
-		double borderOfProbability = 0.0d;
+		double borderOfProbability = 0.0;
 		VertexLayerParameters<V> selectedVertexLayer = new VertexLayerParameters<>();
 				
 		// Choose a layer of vertices taking into account the probabilities of layers selection
@@ -99,10 +99,10 @@ public class FourSizeSubgraphsCounterSampling<V, E> {
 	public int searchOtherTypesOfSubgraphs() {
 		Random randomGenerator = new Random();
 		double randomDoubleValue = randomGenerator.nextDouble();
-		while (randomDoubleValue == 0.0d) {
+		while (randomDoubleValue == 0.0) {
 			randomDoubleValue = randomGenerator.nextDouble();
 		}
-		double borderOfProbability = 0.0d;
+		double borderOfProbability = 0.0;
 		EdgeLayerParameters<E> selectedEdgeLayer = null;
 		
 		// Choose a layer of edges taking into account the probabilities of layers selection
