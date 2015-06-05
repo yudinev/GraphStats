@@ -41,6 +41,14 @@ public class Main {
      * @param args input arguments
      */
     public static void main(String[] args) {
+    	String inputArgs = "";
+    	
+    	for (String string : args) {
+    		inputArgs += string + " ";
+		}
+    	
+    	LOG.debug("Input arguments: " + inputArgs);
+
         long startTime;
         Hypergraph<Integer, Integer> graph;
 
